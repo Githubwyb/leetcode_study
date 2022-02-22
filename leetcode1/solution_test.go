@@ -1,4 +1,4 @@
-package leetcode1
+package leetcode
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ func TestTwoSum(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := TwoSum(*v.InputArr, v.Target)
+		result := twoSum(*v.InputArr, v.Target)
 		if result[0] != v.Want[0] || result[1] != v.Want[1] {
 			t.Fatalf("%d input %v, target %d, expect %v but %v", i, v.InputArr, v.Target, v.Want, result)
 		}
