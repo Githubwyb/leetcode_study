@@ -33,7 +33,8 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := FindMedianSortedArrays1(*v.Nums1, *v.Nums2)		if result != v.Want {
+		result := FindMedianSortedArrays1(*v.Nums1, *v.Nums2)
+		if result != v.Want {
 			t.Fatalf("%d, nums1 %v, nums2 %v, expect %v but %v", i, v.Nums1, v.Nums2, v.Want, result)
 		}
 		fmt.Println(i, result)
