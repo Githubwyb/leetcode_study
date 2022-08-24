@@ -4,13 +4,12 @@ services:               # 服务，里面写docker容器的服务
     leetcode_study:                             # 服务名
         container_name: leetcode_study          # 指定容器名字，不让容器自己起名字
         image: 'golang:latest'                # 依赖的镜像，这里是不写Dockerfile的关键
-        # ports:                              # 端口映射关系，host:container
-            # - "7878:7878"
+        network_mode: "host"
         volumes:                            # 挂载路径，本地是当前目录（yml所在目录），挂载到container的/code目录，并且只读
             - .:/code:rw
-            - /home/wangyubo/.vscode-server:/root/.vscode-server:rw
-            - /home/wangyubo/go:/go:rw
+            - /E/work/docker_files/.vscode-server:/root/.vscode-server:rw
+            - /E/work/docker_files/go:/go:rw
+        environment:
+            GOPROXY: "https://goproxy.cn"
         working_dir: /code                  # 工作目录，docker启动后自动cd到此目录
-        # command: ["node", "server.js"]      # 容器服务启动的命令
         tty: true                           # 不设置command可以用这一行不让容器退出
-        restart: always                     # docker服务自启动，并且自动重启
