@@ -1,46 +1,49 @@
 package main
 
 import (
-	"fmt"
 	_ "fmt"
-	"strconv"
-	"strings"
 )
 
-type transationInfo struct {
-	time   int
-	amount int
-	city   string
-	hasOut bool
-}
-
-func invalidTransactions(transactions []string) []string {
-	// 交易转成对应需要的类型，使用map进行储存，按照名字进行划分
-	// 同名交易，如果合法，替换前一个名字
-	//          如果不合法，输出两个交易
-	var result []string
-	var recordMap map[string]transationInfo
-	for _, v := range transactions {
-		arr := strings.Split(v, ",")
-		name := arr[0]
-		var info transationInfo
-		tmp, _ := strconv.ParseInt(arr[1], 10, 64)
-		info.time = int(tmp)
-		tmp, _ = strconv.ParseInt(arr[2], 10, 64)
-		info.amount = int(tmp)
-		info.city = arr[3]
-
-		lastInfo, ok := recordMap[name]
-		if !ok {
-			recordMap[name] = info
+func reformatNumber(number string) (result string) {
+	var addStr []byte
+	for i := range number {
+		if number[i] == ' ' || number[i] == '-' {
 			continue
 		}
-
-		// 存在判断是否合法
-		if info.amount > 1000 {
-			result = append(result, fmt.Sprintf("%s,%d,%d,%s"))
-		} lastInfo.city != info.city && info.time - lastInfo.time < 60 {
-
+		addStr = append(addStr, number[i])
+		if len(addStr) > 4 {
+			result += string(addStr[:3]) + "-"
+			addStr = addStr[3:]
 		}
 	}
+	if len(addStr) == 4 {
+		result += string(addStr[:2]) + "-" + string(addStr[2:])
+	} else {
+		result += string(addStr)
+	}
+	return
+}
+
+func reformatNumber1(number string) string {
+	addStr := make([]byte, 0, 4)
+	result := make([]byte, 0, len(number))
+	for i := range number {
+		if number[i] == ' ' || number[i] == '-' {
+			continue
+		}
+		addStr = append(addStr, number[i])
+		if len(addStr) == 3 {
+			addStr = append(addStr, '-')
+			result = append(result, addStr...)
+			addStr = addStr[:0]
+		}
+	}
+	result = append(result, addStr...)
+	if result[len(result)-1] == '-' {
+		return string(result[:len(result)-1])
+	} else if len(result) > 4 && result[len(result)-2] == '-' {
+		result[len(result)-2] = result[len(result)-3]
+		result[len(result)-3] = '-'
+	}
+	return string(result)
 }
