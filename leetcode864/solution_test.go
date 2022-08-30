@@ -32,4 +32,11 @@ func TestSolution(t *testing.T) {
 		}
 		fmt.Println(i, "result", result)
 	}
+	for i, v := range testGroup {
+		result := shortestPathAllKeys2(v.grid)
+		if result != v.Want {
+			t.Fatalf("%d, v.grid %v expect '%v' but '%v'", i, v.grid, v.Want, result)
+		}
+		fmt.Println(i, "result", result)
+	}
 }

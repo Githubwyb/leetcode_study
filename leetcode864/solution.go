@@ -1,7 +1,9 @@
 package main
 
 import (
+	"container/heap"
 	"container/list"
+	"fmt"
 	_ "fmt"
 )
 
@@ -13,10 +15,8 @@ type pointT struct {
 }
 
 var (
-	r int // 行数
-	c int // 列数
 	// 按照上下左右的相对位置设定，用于后面方便找四周的点
-	kRoundPoints = []pointT{
+	kRoundPoints = [][]int{
 		{0, -1},
 		{0, 1},
 		{-1, 0},
@@ -25,13 +25,10 @@ var (
 )
 
 func shortestPathAllKeys(grid []string) int {
-	r = len(grid)
-	c = len(grid[0])
-
 	// location['a'] is the (x, y) of a
 	location := make(map[byte]pointT)
-	for i := 0; i < r; i++ {
-		for j := 0; j < c; j++ {
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[0]); j++ {
 			ch := grid[i][j]
 			if ch != '.' && ch != '#' {
 				location[ch] = pointT{j, i}
@@ -123,7 +120,7 @@ func bfs(src pointT, dst pointT, grid []string, keymask int) int {
 		}
 		// 不是目标点，从此点出发，向四周走一下
 		for i := range kRoundPoints {
-			px, py := tx+kRoundPoints[i].x, ty+kRoundPoints[i].y
+			px, py := tx+kRoundPoints[i][0], ty+kRoundPoints[i][1]
 			// 如果超出边界或者已经走过了或者碰到墙，就继续
 			if py < 0 || py >= len(grid) || px < 0 || px >= len(grid[0]) || seen[py][px] || grid[py][px] == '#' {
 				continue
@@ -146,26 +143,22 @@ func bfs(src pointT, dst pointT, grid []string, keymask int) int {
 type pointST struct {
 	x     int
 	y     int
+	step  int
 	state int
 }
 
 func shortestPathAllKeys1(grid []string) int {
 	// location['a'] is the (x, y) of a
-	location := make(map[byte]pointT)
+	location := make(map[byte]pointST)
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[0]); j++ {
 			ch := grid[i][j]
 			if ch != '.' && ch != '#' {
-				location[ch] = pointT{j, i}
+				location[ch] = pointST{j, i, 0, 0}
 			}
 		}
 	}
 	keyNums := len(location) / 2
-	// 枚举到所有的钥匙，题目条件只会从a-b、a-c、a-d、a-e、a-f几种情况
-	alphabet := make([]byte, keyNums)
-	for i := 0; i < keyNums; i++ {
-		alphabet[i] = byte('a' + i)
-	}
 	finalState := (1 << keyNums) - 1
 
 	// 将钥匙的持有状态作为判断成三维的bfs
@@ -173,53 +166,39 @@ func shortestPathAllKeys1(grid []string) int {
 }
 
 // 将钥匙的持有状态作为判断成三维的bfs
-func bfsThree(src pointT, grid []string, finalState int) int {
+func bfsThree(src pointST, grid []string, finalState int) int {
 	sx, sy := src.x, src.y
-	srcP := pointST{sx, sy, 0}
 
 	// 减小计算量，走过的路不再走，记录一下哪里走过了
-	seen := make([][]map[int]bool, len(grid))
+	seen := make([][][]bool, len(grid))
 	for i := range seen {
-		seen[i] = make([]map[int]bool, len(grid[0]))
+		seen[i] = make([][]bool, len(grid[0]))
 		for j := range seen[i] {
-			seen[i][j] = make(map[int]bool)
+			seen[i][j] = make([]bool, finalState+1)
 		}
 	}
 	seen[sy][sx][0] = true
 
-	// 使用层数作为步数
-	curDepth := 0
 	var queue list.List
-	// 插入源地址，作为第一层，使用nil作为层间隔
-	queue.PushBack(srcP)
-	queue.PushBack(nil)
-	// 队列一定含有一个层间隔，不在头就在尾，如果只剩一个层间隔，说明没路可走
-	for queue.Len() > 1 {
+	queue.PushBack(src)
+	for queue.Len() > 0 {
 		tmp := queue.Front().Value
 		queue.Remove(queue.Front())
-		if tmp == nil {
-			// 找到层间隔，说明当前层遍历完了，步数加一准备下一层
-			curDepth++
-			// 当前层遍历完，队列剩余的都是下一层，加入一个层间隔
-			queue.PushBack(nil)
-			continue
-		}
 
 		// 判断当前点是不是已经达成目标
-		tx, ty, state := tmp.(pointST).x, tmp.(pointST).y, tmp.(pointST).state
+		tx, ty, step, state := tmp.(pointST).x, tmp.(pointST).y, tmp.(pointST).step, tmp.(pointST).state
 		if state == finalState {
-			return curDepth
+			return step
 		}
 		// 不是目标点，从此点出发，向四周走一下
 		for i := range kRoundPoints {
-			px, py := tx+kRoundPoints[i].x, ty+kRoundPoints[i].y
+			px, py := tx+kRoundPoints[i][0], ty+kRoundPoints[i][1]
 			// 如果超出边界或者碰到墙，就继续
 			if py < 0 || py >= len(grid) || px < 0 || px >= len(grid[0]) || grid[py][px] == '#' {
 				continue
 			}
 			// 判断是否曾以相同状态要走过这个点
-			tmpMap := seen[py][px]
-			if _, ok := tmpMap[state]; ok {
+			if seen[py][px][state] {
 				continue
 			}
 			ch := grid[py][px]
@@ -235,8 +214,127 @@ func bfsThree(src pointT, grid []string, finalState int) int {
 				tmpState |= (1 << (ch - 'a'))
 			}
 			// 记录到队列中，作为下一层的点
-			queue.PushBack(pointST{px, py, tmpState})
+			queue.PushBack(pointST{px, py, step + 1, tmpState})
 		}
 	}
 	return -1
+}
+
+/********** 第三种，Dijkstra **********/
+type pointTT struct {
+	x     int
+	y     int
+	step  int
+	state int
+}
+
+type littleQueue []pointTT
+
+func (q *littleQueue) Push(v interface{}) {
+	*q = append(*q, v.(pointTT))
+}
+func (q *littleQueue) Pop() interface{} {
+	x := (*q)[len(*q)-1]
+	*q = (*q)[:len(*q)-1]
+	return x
+}
+func (q *littleQueue) Len() int           { return len(*q) }
+func (q *littleQueue) Less(i, j int) bool { return (*q)[i].step < (*q)[j].step }
+func (q *littleQueue) Swap(i, j int)      { (*q)[i], (*q)[j] = (*q)[j], (*q)[i] }
+
+func shortestPathAllKeys2(grid []string) int {
+	location := make(map[byte]pointTT)
+	// 小根堆，用于Djikastra算法
+	pq := make(littleQueue, 0, 1)
+	// 距离矩阵，保存每个点到其他关键点的距离
+	distMaps := make(map[byte]map[byte]int)
+	heap.Init(&pq)
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[0]); j++ {
+			ch := grid[i][j]
+			if ch != '.' && ch != '#' {
+				p := pointTT{j, i, 0, 0}
+				location[ch] = p
+				distMaps[ch] = bpfFrom(p, grid)
+			}
+			if ch == '@' {
+				heap.Push(&pq, pointTT{j, i, 0, 0})
+			}
+		}
+	}
+	keyNums := len(location) / 2
+	finalState := (1 << keyNums) - 1
+
+	finalDistMap := make(map[string]int)
+	finalDistMap[fmt.Sprintf("%c%d", '@', 0)] = 0
+
+	// Dijkstra算法
+	for pq.Len() > 0 {
+		// 每次取队列中最小的距离
+		p := heap.Pop(&pq).(pointTT)
+		// 从此点开始走，找到所有关键点
+		ch := grid[p.y][p.x]
+		distMap := distMaps[ch]
+		for i, v := range distMap {
+			state := p.state
+			if i >= 'A' && i <= 'Z' {
+				// 走到锁，判断是否可以走，不可以走就不走
+				if (state & (1 << (i - 'A'))) == 0 {
+					continue
+				}
+			} else if i >= 'a' && i <= 'z' {
+				// 走到钥匙，拿起钥匙
+				state |= (1 << (i - 'a'))
+			}
+			// 能走的点，如果没到达过，或者到达过但比之前距离更短，才加入队列
+			t := location[i]
+			t.state = state
+			t.step = p.step + v
+			key := fmt.Sprintf("%c%d", i, state)
+			if d, ok := finalDistMap[key]; ok && t.step >= d {
+				continue
+			}
+			finalDistMap[key] = t.step
+			heap.Push(&pq, t)
+		}
+	}
+	return -1
+}
+
+func bpfFrom(src pointTT, grid []string) map[byte]int {
+	result := make(map[byte]int)
+	sx, sy := src.x, src.y
+	// 减小计算量，走过的路不再走，记录一下哪里走过了
+	seen := make([][]bool, len(grid))
+	for i := range seen {
+		seen[i] = make([]bool, len(grid[0]))
+	}
+	seen[sy][sx] = true
+
+	var queue list.List
+	queue.PushBack(src)
+	for queue.Len() > 0 {
+		t := queue.Front().Value.(pointTT)
+		queue.Remove(queue.Front())
+
+		// 向四周走一次
+		for i := range kRoundPoints {
+			px, py := t.x+kRoundPoints[i][0], t.y+kRoundPoints[i][1]
+			// 如果超出边界或者碰到墙或者走过了，就继续
+			if py < 0 || py >= len(grid) || px < 0 || px >= len(grid[0]) || seen[py][px] || grid[py][px] == '#' {
+				continue
+			}
+			// 判断是否是空位，空位就继续走
+			ch := grid[py][px]
+			if ch == '.' {
+				// 记录到队列中，作为下一层的点
+				queue.PushBack(pointTT{px, py, t.step + 1, 0})
+				seen[py][px] = true
+				continue
+			}
+			// 关键点插入map，这个时候还没走上去，所以步数+1才走上去
+			result[ch] = t.step + 1
+		}
+	}
+	return result
 }
