@@ -272,6 +272,10 @@ func shortestPathAllKeys2(grid []string) int {
 	for pq.Len() > 0 {
 		// 每次取队列中最小的距离
 		p := heap.Pop(&pq).(pointTT)
+		// finalState还是队列中最小的步数，说明已经到了最小的步数
+		if p.state == finalState {
+			return p.step
+		}
 		// 从此点开始走，找到所有关键点
 		ch := grid[p.y][p.x]
 		distMap := distMaps[ch]
