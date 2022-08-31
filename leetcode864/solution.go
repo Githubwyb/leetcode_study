@@ -329,11 +329,11 @@ func bpfFrom(src pointTT, grid []string) map[byte]int {
 				continue
 			}
 			// 判断是否是空位，空位就继续走
+			seen[py][px] = true
 			ch := grid[py][px]
 			if ch == '.' {
 				// 记录到队列中，作为下一层的点
 				queue.PushBack(pointTT{px, py, t.step + 1, 0})
-				seen[py][px] = true
 				continue
 			}
 			// 关键点插入map，这个时候还没走上去，所以步数+1才走上去

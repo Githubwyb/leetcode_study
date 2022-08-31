@@ -16,6 +16,7 @@ func TestSolution(t *testing.T) {
 		{[]string{"@..aA", "..B#.", "....b"}, 6},
 		{[]string{"@Aa"}, -1},
 		{[]string{"@...a", ".###A", "b.BCc"}, 10},
+		{[]string{"...#.","a..@.","#..#.","b.#B.",".##.A"}, 7},
 	}
 
 	for i, v := range testGroup {
