@@ -1,65 +1,74 @@
 package main
 
 import (
+	"container/list"
 	"fmt"
 )
 
-var kPrice = []int{1, 3, 7, 11, 13}
+type lineT struct {
+	left  int
+	right int
+}
 
-func getMinProduct(money, index int, prices []int, minCount int) int {
-	if index < 0 {
-		return -1
-	}
-	if kPrice[index] > money {
-		return getMinProduct(money, index-1, prices, minCount)
-	}
-	// 如果存在一个更优结果，此结果给这里剩余的个数不足以完成money，不继续尝试
-	if minCount > 0 && minCount*kPrice[index] < money {
-		return -1
-	}
-	// 最大化使用价钱
-	maxCount := money / kPrice[index]
-	if maxCount > prices[index] {
-		maxCount = prices[index]
-	}
-	// 把钱花出去，正好花完就返回当前商品用了多少
-	leftMoney := money - kPrice[index]*maxCount
-	// 不剩钱直接返回
-	if leftMoney == 0 {
-		return maxCount
-	}
-	// 剩的有钱，看是否存在更小方案，默认无方案
-	for i := maxCount; i >= 0; i-- {
-		leftMoney = money - kPrice[index]*i
-		count := getMinProduct(leftMoney, index-1, prices, minCount-i)
-		// 下一个价格没有方案，少买一个当前的再试一次
-		if count == -1 {
-			continue
-		}
-		checkResult := i + count
-		if minCount < 0 {
-			// 有一个方案，先记录
-			minCount = checkResult
-		} else if checkResult < minCount {
-			minCount = checkResult
+// 返回是否可以到达所有点
+func bfs(connections [][]int) bool {
+	seen := make([]bool, len(connections))
+	seen[0] = true
+	var queue list.List
+	queue.PushBack(0)
+	for queue.Len() > 0 {
+		point := queue.Front().Value.(int)
+		queue.Remove(queue.Front())
+		// 向所有点走一遍，能走到就设置seen并加入队列，已经走过就不用了
+		for i, v := range connections[point] {
+			// 从这里走不到或者已经走过了
+			if v == 0 || seen[i] {
+				continue
+			}
+			seen[i] = true
+			queue.PushBack(i)
 		}
 	}
-	return minCount
+	for _, v := range seen {
+		if !v {
+			return true
+		}
+	}
+	return false
+}
+
+func getCount(n int, lines []lineT) int {
+	result := 0
+	connections := make([][]int, n)
+	for index := range connections {
+		connections[index] = make([]int, n)
+		connections[index][index] = 1
+	}
+	for _, v := range lines {
+		connections[v.left][v.right]++
+		connections[v.right][v.left]++
+	}
+	for i := range lines {
+		connections[lines[i].left][lines[i].right]--
+		connections[lines[i].right][lines[i].left]--
+		for j := i + 1; j < len(lines); j++ {
+			connections[lines[j].left][lines[j].right]--
+			connections[lines[j].right][lines[j].left]--
+			if bfs(connections) {
+				result++
+			}
+			connections[lines[j].left][lines[j].right]++
+			connections[lines[j].right][lines[j].left]++
+		}
+		connections[lines[i].left][lines[i].right]++
+		connections[lines[i].right][lines[i].left]++
+	}
+	return result
 }
 
 func main() {
-	// var a1, a3, a7, a11, a13 int
-	// money := 0
-	// for {
-	// n, _ := fmt.Scan(&a1, &a3, &a7, &a11, &a13)
-	// if n == 0 {
-	// 	break
-	// }
-	// n, _ = fmt.Scan(&money)
-	// if n == 0 {
-	// 	break
-	// }
-
-	fmt.Println(getMinProduct(30, 4, []int{1, 2, 3, 4, 5}, -1))
-	// }
+	fmt.Println(getCount(3, []lineT{{0, 1}, {1, 2}, {2, 0}}))
+	fmt.Println(getCount(2, []lineT{{0, 0}, {0, 0}, {0, 1}}))
+	fmt.Println(getCount(3, []lineT{{0, 1}, {0, 1}, {0, 1}, {1, 2}, {1, 2}, {1, 2}}))
+	fmt.Println(getCount(4, []lineT{{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}}))
 }
