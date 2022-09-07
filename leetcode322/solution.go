@@ -12,6 +12,7 @@ func getMinCount(coins []int, amount int, amountMap []int) int {
 	if amount == 0 {
 		return 0
 	}
+	// 存在记录，直接返回
 	if amountMap[amount] != 0 {
 		return amountMap[amount]
 	}
@@ -22,7 +23,12 @@ func getMinCount(coins []int, amount int, amountMap []int) int {
 		if amount < coins[i-1] {
 			continue
 		}
+		if amount == coins[i-1] {
+			amountMap[amount] = 1
+			return 1
+		}
 		tmp := getMinCount(coins, amount-coins[i-1], amountMap)
+		// 没结果的，找下一个
 		if tmp < 0 {
 			continue
 		}
