@@ -61,3 +61,35 @@ func numberOfWays(startPos int, endPos int, k int) int {
 
 	return getCount((k-diff)/2, k)
 }
+
+func numberOfWays1(startPos int, endPos int, k int) int {
+	diff := abs(startPos - endPos)
+	// 首先判断是否可达
+	if k < diff {
+		return 0
+	}
+	if k == diff {
+		return 1
+	}
+	// 判断是否奇偶不同
+	if (k % 2) != (diff % 2) {
+		return 0
+	}
+
+	n := (k - diff) / 2
+
+	dp := make([][]int, n+1)
+	for i := range dp {
+		dp[i] = make([]int, k+1)
+	}
+
+	for i := 1; i < k+1; i++ {
+		dp[1][i] = i
+		// j最大不超过i
+		for j := 2; j < n+1 && j <= i; j++ {
+			dp[j][i] = (dp[j][i-1] + dp[j-1][i-1]) % maxSum
+		}
+	}
+
+	return dp[n][k]
+}

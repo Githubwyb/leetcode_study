@@ -67,9 +67,9 @@ func getCount(n int, lines []lineT) int {
 }
 
 func main() {
-	// fmt.Println(getCount(3, []lineT{{0, 1}, {1, 2}, {2, 0}}))
-	// fmt.Println(getCount(2, []lineT{{0, 0}, {0, 0}, {0, 1}}))
-	// fmt.Println(getCount(3, []lineT{{0, 1}, {0, 1}, {0, 1}, {1, 2}, {1, 2}, {1, 2}}))
-	// fmt.Println(getCount(4, []lineT{{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}}))
-	fmt.Println(1e1+7)
+	fmt.Println(getCount(3, []lineT{{0, 1}, {1, 2}, {2, 0}}))
+	fmt.Println(getCount(2, []lineT{{0, 0}, {0, 0}, {0, 1}}))
+	fmt.Println(getCount(3, []lineT{{0, 1}, {0, 1}, {0, 1}, {1, 2}, {1, 2}, {1, 2}}))
+	fmt.Println(getCount(4, []lineT{{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}}))
+	// fmt.Println(1e1+7)
 }

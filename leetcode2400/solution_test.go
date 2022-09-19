@@ -19,10 +19,18 @@ func TestSolution(t *testing.T) {
 		{1, 1000, 999, 1},
 		{989, 1000, 99, 934081896},
 		{272, 270, 6, 15},
+		{1000, 1000, 1000, 159835829},
 	}
 
 	for i, v := range testGroup {
 		result := numberOfWays(v.startPos, v.endPos, v.k)
+		if result != v.Want {
+			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
+		}
+		fmt.Println(i, "result", result)
+	}
+	for i, v := range testGroup {
+		result := numberOfWays1(v.startPos, v.endPos, v.k)
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

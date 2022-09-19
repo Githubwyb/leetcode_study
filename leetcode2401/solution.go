@@ -31,3 +31,26 @@ func longestNiceSubarray(nums []int) int {
 	}
 	return result
 }
+
+func max(a, b int) int {
+	if b > a {
+		return b
+	}
+	return a
+}
+
+func longestNiceSubarray1(nums []int) int {
+	result := 1 // 记录最终结果，最少为1
+	left := 0
+	mask := 0 // 记录或的值
+	for right, v := range nums {
+		// 排除不符合条件的
+		for (v & mask) != 0 {
+			mask ^= nums[left]
+			left++
+		}
+		mask |= v
+		result = max(result, right-left+1)
+	}
+	return result
+}
