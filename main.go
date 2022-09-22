@@ -3,6 +3,7 @@ package main
 import (
 	"container/list"
 	"fmt"
+	"sort"
 )
 
 type lineT struct {
@@ -67,9 +68,17 @@ func getCount(n int, lines []lineT) int {
 }
 
 func main() {
-	fmt.Println(getCount(3, []lineT{{0, 1}, {1, 2}, {2, 0}}))
-	fmt.Println(getCount(2, []lineT{{0, 0}, {0, 0}, {0, 1}}))
-	fmt.Println(getCount(3, []lineT{{0, 1}, {0, 1}, {0, 1}, {1, 2}, {1, 2}, {1, 2}}))
-	fmt.Println(getCount(4, []lineT{{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}}))
-	// fmt.Println(1e1+7)
+	// fmt.Println(getCount(3, []lineT{{0, 1}, {1, 2}, {2, 0}}))
+	// fmt.Println(getCount(2, []lineT{{0, 0}, {0, 0}, {0, 1}}))
+	// fmt.Println(getCount(3, []lineT{{0, 1}, {0, 1}, {0, 1}, {1, 2}, {1, 2}, {1, 2}}))
+	// fmt.Println(getCount(4, []lineT{{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}}))
+	a := []int{1, 2, 2, 4, 4, 5}
+
+	// 二分查找从最左边开始的第一个满足条件的索引
+	fmt.Println(sort.Search(len(a), func(i int) bool { return a[i] >= 2 })) // 1
+	// 二分查找从最左边开始第一个 func(i) <= 0 的索引，并返回对应索引是否 func(i) == 0
+	fmt.Println(sort.Find(len(a), func(i int) int { return 3 - a[i] })) // 3, false
+	// 基本类型可以直接调用，但是只支持升序的slice
+	// 源码就是调用 sort.Search(len(a), func(i int) bool { return a[i] >= 2 }
+	fmt.Println(sort.SearchInts(a, 2)) // 1
 }
