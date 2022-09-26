@@ -68,3 +68,49 @@ func reverseOddLevels(root *TreeNode) *TreeNode {
 
 	return root
 }
+
+// bfs
+func reverseOddLevels1(root *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	q := []*TreeNode{root}
+	for isOdd := 1; q[0].Left != nil; isOdd ^= 1 {
+		// 将下一层放到一个新的数组中
+		next := make([]*TreeNode, 0, len(q)*2)
+		for _, node := range q {
+			next = append(next, node.Left, node.Right)
+		}
+		q = next
+
+		if isOdd == 0 {
+			continue
+		}
+		// 如果是奇数层，将这一层反转值
+		for i, n := 0, len(q); i < n/2; i++ {
+			q[i].Val, q[n-1-i].Val = q[n-1-i].Val, q[i].Val
+		}
+	}
+	return root
+}
+
+// dfs
+func dfs(node1 *TreeNode, node2 *TreeNode, isOdd bool) {
+	if node1 == nil {
+		return
+	}
+	if isOdd {
+		node1.Val, node2.Val = node2.Val, node1.Val
+	}
+	dfs(node1.Left, node2.Right, !isOdd)
+	dfs(node1.Right, node2.Left, !isOdd)
+}
+
+func reverseOddLevels2(root *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	dfs(root.Left, root.Right, true)
+	return root
+}

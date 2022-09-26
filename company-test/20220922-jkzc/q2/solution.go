@@ -4,8 +4,13 @@ import (
 	_ "fmt"
 )
 
+/*
+小明有N块草莓蛋糕，小红有M块巧克力蛋糕(N+M<1000)，他们都觊觎着对方手里的蛋糕，最终他们决定来玩一个游戏。他们分别把蛋糕暂时地放到了桌子上，两个人轮流从桌子上拿去蛋糕，每次允许从草莓蛋糕或者巧克力蛋糕里拿取「最少」一块「最多」K块蛋糕(不允许即拿草莓又拿巧克力蛋糕)，拿到最后一块蛋糕的人将赢得所有的蛋糕。假设两个小朋友都足够聪明，先拿的人是赢还是输呢?
+*/
+
 // 检查第一个是否可以赢，true可以，false不可以
-func checkIsFirstWin(n int, m int) bool {
+func checkIsFirstWin(n int, m int, k int) bool {
+	// 取m和n中较大的那个（假设是m），如果满足m=a(k+1)+n，a为0到正无穷的整数。先拿的输了，否则先拿的就赢了，
 	if m < 0 || n < 0 {
 		return false
 	}
@@ -13,27 +18,10 @@ func checkIsFirstWin(n int, m int) bool {
 		return false
 	}
 
-	less, bigger := m, n
-	if m > n {
-		less = n
-		bigger = m
+	diff := m - n
+	if diff < 0 {
+		diff = -diff
 	}
 
-	// 0 n 谁先拿谁赢
-	if less == 0 {
-		return true
-	}
-
-	// 1 1 谁先拿谁输，大于1，构造1就赢了
-	if less == 1 {
-		return bigger > 1
-	}
-
-	// 相等就输
-	// 2 2，构造 1 2 和 0 2 都输了
-	// 3 3，构造 2 3 对方构造 2 2 就赢了
-	//      构造 1 3 对方构造 1 1 就赢了
-	//      构造 0 3 对方直接赢了
-	// 那么不等的情况，第一个拿的只需要构造相等就赢了
-	return less != bigger
+	return diff%(k+1) != 0
 }

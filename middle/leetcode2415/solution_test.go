@@ -83,4 +83,30 @@ func TestSolution(t *testing.T) {
 		}
 		fmt.Println(i, "result", resultArr)
 	}
+	for i, v := range testGroup {
+		result := reverseOddLevels1(getTreeByArray(v.root))
+		resultArr := getArrayByTree(result)
+		if len(resultArr) != len(v.Want) {
+			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, resultArr)
+		}
+		for j := range resultArr {
+			if resultArr[j] != v.Want[j] {
+				t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, resultArr)
+			}
+		}
+		fmt.Println(i, "result", resultArr)
+	}
+	for i, v := range testGroup {
+		result := reverseOddLevels2(getTreeByArray(v.root))
+		resultArr := getArrayByTree(result)
+		if len(resultArr) != len(v.Want) {
+			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, resultArr)
+		}
+		for j := range resultArr {
+			if resultArr[j] != v.Want[j] {
+				t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, resultArr)
+			}
+		}
+		fmt.Println(i, "result", resultArr)
+	}
 }
