@@ -7,21 +7,20 @@ import (
 
 func TestSolution(t *testing.T) {
 	type testCase struct {
-		arr  []int
-		in   int
+		nums []int
+		k    int
 		Want int
 	}
 
 	testGroup := []testCase{
-		{[]int{1, 2, 2, 3, 4}, 0, 0},
-		{[]int{1, 2, 2, 3, 4}, 2, 3},
-		{[]int{1, 2, 2, 3, 4}, 5, 5},
+		{[]int{9, 3, 1, 2, 6, 3}, 3, 4},
+		{[]int{4}, 7, 0},
 	}
 
 	for i, v := range testGroup {
-		result := xxx(v.arr, v.in)
+		result := subarrayGCD(v.nums, v.k)
 		if result != v.Want {
-			t.Fatalf("%d, v %v, expect '%v' but '%v'", i, v, v.Want, result)
+			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result", result)
 	}
