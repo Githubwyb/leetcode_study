@@ -14,15 +14,12 @@ func longestSubarray(nums []int) int {
 			result = 1
 		} else if v == max {
 			length++
-		} else {
 			if length > result {
 				result = length
 			}
+		} else {
 			length = 0
 		}
-	}
-	if length > result {
-		result = length
 	}
 	return result
 }
