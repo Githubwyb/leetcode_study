@@ -23,42 +23,36 @@ func sumOfNumberAndReverse(num int) bool {
 	return false
 }
 
-func toInt(v bool) int {
-	if v {
-		return 1
-	}
-	return 0
-}
-
 // s数字的字符串形式
 // l，r 左右指针
 // pre 左侧是否被进位的标识
 func existReverseSum(s string, l, r int, pre int) bool {
+	// 左侧第一个为1，不考虑进位的情况，右侧必须为1，否则就是 100 = 050 + 050的情况
 	if l == 0 && s[l] == '1' && s[r] == '0' {
 		return false
 	}
 	suf := 0 // 右侧是否进位的标识
-	// 181 l为0，r为2
 	for l < r {
-		// 存在进位标识，那么左侧高位应该为1x
 		checkLeft := int(s[l] - '0')
 		checkRight := int(s[r] - '0')
-
 		l++
 		r--
 
-		if checkLeft-suf == checkRight && (pre == 0 || checkRight <= 8) {
-			// 左侧存在进位，则右侧减掉进位不可能大于8，因为9+9最多到18，不可能到9
+		// 存在进位，右侧最小到1
+		if suf == 1 && checkRight == 0 {
+			return false
+		}
+		// 本身要进位，两数相加最多到18，也就是右侧不可能为9（存在进位上面判断过不可能为0，那么就是不存在进位不可能为9）
+		if pre == 1 && suf == 0 && checkRight == 9 {
+			return false
+		}
+
+		if checkLeft == checkRight-suf {
+			// 如果左侧存在进位，那么两个数最大加出来只能到18
+			suf = pre
 			pre = 0
-			suf = 1
-		} else if pre == 1 && checkLeft-1-suf == checkRight {
-			suf = 1
-			pre = 1
-		} else if pre == 0 && checkLeft-suf == checkRight {
-			suf = 0
-			pre = 0
-		} else if pre == 0 && checkLeft-1-suf == checkRight {
-			suf = 0
+		} else if checkLeft-1+suf == checkRight {
+			suf = pre
 			pre = 1
 		} else {
 			return false

@@ -12,6 +12,7 @@ func TestSolution(t *testing.T) {
 	}
 
 	testGroup := []testCase{
+		{100000, false},
 		{99998, false},
 		{443, true},
 		{63, false},
@@ -19,7 +20,6 @@ func TestSolution(t *testing.T) {
 		{1, false},
 		{21, false},
 		{100, false},
-		{100000, false},
 		{99988, true},
 	}
 
