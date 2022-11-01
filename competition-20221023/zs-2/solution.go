@@ -1,10 +1,6 @@
 package main
 
 func mgcd(a int, b int) int {
-	if a < b {
-		a, b = b, a
-	}
-
 	for a%b != 0 {
 		a, b = b, a%b
 	}
