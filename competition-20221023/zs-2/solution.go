@@ -1,8 +1,8 @@
 package main
 
 func mgcd(a int, b int) int {
-	for a%b != 0 {
-		a, b = b, a%b
+	for a != 0 {
+		a, b = b%a, a
 	}
 	return b
 }
