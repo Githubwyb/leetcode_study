@@ -56,6 +56,14 @@ func TestSolution(t *testing.T) {
 		}
 		fmt.Println(i, "result", result)
 	}
+	for i, v := range testGroup {
+		tmp := removeNodes1(makeList(v.list))
+		result := list2slice(tmp)
+		if !compareSlice(result, v.Want) {
+			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
+		}
+		fmt.Println(i, "result", result)
+	}
 }
 
 func compareSlice(l, r interface{}) bool {

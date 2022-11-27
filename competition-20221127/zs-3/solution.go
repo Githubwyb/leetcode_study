@@ -36,3 +36,19 @@ func removeNodes(head *ListNode) *ListNode {
 	}
 	return resultTmp.Next
 }
+
+func removeNodes1(head *ListNode) *ListNode {
+	arr := make([]*ListNode, 0, 1)
+	for p := head; p != nil; p = p.Next {
+		t := len(arr) - 1
+		for t >= 0 && arr[t].Val < p.Val {
+			arr = arr[:t]
+			t--
+		}
+		arr = append(arr, p)
+	}
+	for i := 0; i < len(arr)-1; i++ {
+		arr[i].Next = arr[i+1]
+	}
+	return arr[0]
+}
