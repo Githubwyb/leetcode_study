@@ -8,21 +8,78 @@ import (
 func TestSolution(t *testing.T) {
 	type testCase struct {
 		arr  []int
-		in   int
-		Want int
+		Want [][]int
 	}
 
 	testGroup := []testCase{
-		{[]int{1, 2, 2, 3, 4}, 0, 0},
-		{[]int{1, 2, 2, 3, 4}, 2, 3},
-		{[]int{1, 2, 2, 3, 4}, 5, 5},
+		{[]int{-1, 0, 1, 2, -1, -1, -4, 3}, [][]int{}},
 	}
 
-	for i, v := range testGroup {
-		result := xxx(v.arr, v.in)
-		if result != v.Want {
-			t.Fatalf("%d, v %v, expect '%v' but '%v'", i, v, v.Want, result)
-		}
+	for i, _ := range testGroup {
+		result := combine(6, 3)
+		// if !compareSlice(result, v.Want) {
+		// 	t.Fatalf("%d, v %v, expect '%v' but '%v'", i, v, v.Want, result)
+		// }
 		fmt.Println(i, "result", result)
 	}
+}
+
+func compareSlice(l, r interface{}) bool {
+	switch l.(type) {
+	case []int:
+		a := l.([]int)
+		b := r.([]int)
+		if len(a) != len(b) {
+			return false
+		}
+
+		if len(a) == 0 {
+			return true
+		}
+
+		for i := range a {
+			if a[i] != b[i] {
+				return false
+			}
+		}
+
+	case []string:
+		a := l.([]string)
+		b := r.([]string)
+		if len(a) != len(b) {
+			return false
+		}
+
+		if len(a) == 0 {
+			return true
+		}
+
+		for i := range a {
+			if a[i] != b[i] {
+				return false
+			}
+		}
+
+	case [][]string:
+		a := l.([][]string)
+		b := r.([][]string)
+		if len(a) != len(b) {
+			return false
+		}
+
+		if len(a) == 0 {
+			return true
+		}
+
+		for i := range a {
+			if !compareSlice(a[i], b[i]) {
+				return false
+			}
+		}
+
+	default:
+		panic("not implement")
+	}
+
+	return true
 }
