@@ -7,19 +7,20 @@ import (
 
 func TestSolution(t *testing.T) {
 	type testCase struct {
-		arr  []int
-		Want [][]int
+		in   []string
+		Want []string
 	}
 
 	testGroup := []testCase{
-		{[]int{-1, 0, 1, 2, -1, -1, -4, 3}, [][]int{}},
+		{[]string{"a", "b", "ab"}, []string{"ab"}},
+		{[]string{"apple", "apples", "banana", "bananas", "bananaappleapples"}, []string{"bananaappleapples"}},
 	}
 
-	for i, _ := range testGroup {
-		result := combine(6, 3)
-		// if !compareSlice(result, v.Want) {
-		// 	t.Fatalf("%d, v %v, expect '%v' but '%v'", i, v, v.Want, result)
-		// }
+	for i, v := range testGroup {
+		result := ComboWords(v.in)
+		if !compareSlice(v.Want, result) {
+			t.Fatalf("%d, v %v, expect '%v' but '%v'", i, v, v.Want, result)
+		}
 		fmt.Println(i, "result", result)
 	}
 }
