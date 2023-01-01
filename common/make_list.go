@@ -1,11 +1,11 @@
-package main
+package common
 
 type ListNode struct {
 	Val  int
 	Next *ListNode
 }
 
-func makeList(list []int) *ListNode {
+func MakeList(list []int) *ListNode {
 	if len(list) == 0 {
 		return nil
 	}

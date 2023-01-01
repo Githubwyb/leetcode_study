@@ -1,6 +1,6 @@
-package main
+package common
 
-func compareSlice(l, r interface{}) bool {
+func CompareSlice(l, r interface{}) bool {
 	switch l.(type) {
 	case []int:
 		a := l.([]int)
@@ -48,7 +48,7 @@ func compareSlice(l, r interface{}) bool {
 		}
 
 		for i := range a {
-			if !compareSlice(a[i], b[i]) {
+			if !CompareSlice(a[i], b[i]) {
 				return false
 			}
 		}

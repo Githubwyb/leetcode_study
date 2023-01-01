@@ -1,4 +1,4 @@
-package main
+package common
 
 import "container/list"
 
@@ -8,7 +8,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-func makeTreeNode(input []interface{}) (root TreeNode) {
+func MakeTreeNode(input []interface{}) (root TreeNode) {
 	point := &root
 	pointChild := 0 // 0 self; 1 left; 2 right
 	var treeList list.List
