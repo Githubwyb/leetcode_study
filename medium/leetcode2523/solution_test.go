@@ -14,6 +14,7 @@ func TestSolution(t *testing.T) {
 	}
 
 	testGroup := []testCase{
+		{999998, 1000000, []int{-1, -1}},
 		{84084, 407043, []int{84179, 84181}},
 		{1, 1000000, []int{2, 3}},
 		{1, 1, []int{-1, -1}},
