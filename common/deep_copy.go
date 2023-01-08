@@ -5,3 +5,9 @@ func DeepCopy(in []int) []int {
 	copy(result, in)
 	return result
 }
+
+func DeepCopyStrings(in []string) []string {
+	result := make([]string, len(in))
+	copy(result, in)
+	return result
+}

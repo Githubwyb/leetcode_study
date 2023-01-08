@@ -1,12 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 const mx int = 1e8
 
 var primes []int = make([]int, 0, 5*1e7)
 
 func main() {
+	sort.Ints()
 	flag := make([]bool, mx+1) // 标记数有没有被筛掉，false就是没有
 	check := 10                // 打印使用
 	for i := 2; i < mx+1; i++ {
