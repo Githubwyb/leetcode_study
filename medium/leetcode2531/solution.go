@@ -109,3 +109,44 @@ func isItPossible(word1 string, word2 string) bool {
 	}
 	return false
 }
+
+func isItPossible1(word1 string, word2 string) bool {
+	set1 := make(map[rune]int)
+	set2 := make(map[rune]int)
+	for _, t := range word1 {
+		set1[t]++
+	}
+	for _, t := range word2 {
+		set2[t]++
+	}
+
+	diff := len(set1) - len(set2)
+	if diff > 2 || diff < -2 {
+		return false
+	}
+
+	getInt := func(x bool) int {
+		if x {
+			return 1
+		}
+		return 0
+	}
+
+	for k1, c1 := range set1 {
+		for k2, c2 := range set2 {
+			if k1 == k2 {
+				// 相等，交换不改变，那么长度差为0就可以
+				if diff == 0 {
+					return true
+				}
+			} else {
+				// 不相等，交换会变化，变化后相等即可
+				// 当前长度 - k1是否唯一 + k2是否存在
+				if (len(set1) - getInt(c1 == 1) + getInt(set1[k2] == 0)) == (len(set2) - getInt(c2 == 1) + getInt(set2[k1] == 0)) {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
