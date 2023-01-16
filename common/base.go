@@ -20,3 +20,10 @@ func min(a, b int) int {
 	}
 	return a
 }
+
+func bool2int(x bool) int {
+	if x {
+		return 1
+	}
+	return 0
+}
