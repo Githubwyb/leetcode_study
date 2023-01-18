@@ -30,4 +30,11 @@ func TestSolution(t *testing.T) {
 		}
 		fmt.Println(i, "result", result)
 	}
+	for i, v := range testGroup {
+		result := rangeAddQueries1(v.n, v.queries)
+		if !common.CompareSlice(result, v.Want) {
+			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
+		}
+		fmt.Println(i, "result", result)
+	}
 }
