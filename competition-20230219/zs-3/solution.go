@@ -22,17 +22,17 @@ func squareFreeSubsets(nums []int) int {
 	var mod int = 1e9 + 7
 	n := 1 << len(p)
 	f := make([]int, n)
-	f[0] = 1
+	f[0] = 1 // 空背包代表一种方案，所有元素要放到空背包中
 	for _, v := range nums {
 		target := getTarget(v, p)
 		if target == -1 {
 			continue
 		}
-		// 找整个空间中谁可以乘以v，可以乘的就加上除v之后的数量
-		for i := 0; i < n; i++ {
-			// i可以由某个数乘以target得到才能参与运算
-			if i&target == target {
-				f[i] = (f[i] + f[i^target]) % mod
+		// 这个元素可以放到背包，找现在所有的方案中可以放进去的
+		for i, v := range f {
+			if v != 0 && i&target == 0 {
+				v1 := i | target
+				f[v1] = (f[v1] + v) % mod
 			}
 		}
 	}
@@ -40,5 +40,32 @@ func squareFreeSubsets(nums []int) int {
 	for _, v := range f {
 		ans = (ans + v) % mod
 	}
+	return ans - 1
+}
+
+func squareFreeSubsets1(nums []int) int {
+	p := []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29}
+	var mod int = 1e9 + 7
+	// 构建背包
+	f := make(map[int]int)
+	f[0] = 1 // 空背包代表一种方案，所有元素要放到空背包中
+	for _, v := range nums {
+		target := getTarget(v, p)
+		if target == -1 {
+			continue
+		}
+		// 这个元素可以放到背包，找现在所有的方案中可以放进去的
+		for i, v := range f {
+			if i&target == 0 {
+				v1 := i | target
+				f[v1] = (f[v1] + v) % mod
+			}
+		}
+	}
+	ans := 0
+	for _, v := range f {
+		ans = (ans + v) % mod
+	}
+	// 最终返回的不包含空背包方案
 	return ans - 1
 }
