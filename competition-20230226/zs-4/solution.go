@@ -97,11 +97,45 @@ func minimumTime1(grid [][]int) int {
 	}
 
 	m, n := len(grid), len(grid[0])
-	endTime := sort.Search(1e5+m+n, func(i int) bool {
-		for _, v := range arrLoc {
-			_ = v
+	// 用是否等于当前的endTime来标记是否走过
+	seen := make([][]int, m)
+	for i := range seen {
+		seen[i] = make([]int, n)
+	}
+	type pointT struct {
+		x, y int
+	}
+	q1 := make([]pointT, 0, m+n)
+	q2 := make([]pointT, 0, m+n)
+	endTime := sort.Search(1e5+m+n, func(endTime int) bool {
+		if endTime < grid[m-1][n-1] {
+			return false
 		}
-		return true
+		q1 = q1[:0]
+		q1 = append(q1, pointT{
+			x: m - 1, y: n - 1,
+		})
+		seen[m-1][n-1] = endTime
+		for t := endTime - 1; len(q1) > 0; t-- {
+			q2 = q2[:0]
+			for _, point := range q1 {
+				for _, v := range arrLoc {
+					x, y := point.x+v[0], point.y+v[1]
+					if x < 0 || x >= m || y < 0 || y >= n || seen[x][y] == endTime || grid[x][y] > t {
+						continue
+					}
+					if x == 0 && y == 0 {
+						return true
+					}
+					seen[x][y] = endTime
+					q2 = append(q2, pointT{
+						x: x, y: y,
+					})
+				}
+			}
+			q1, q2 = q2, q1
+		}
+		return false
 	})
-	return endTime
+	return endTime + (endTime+m+n)%2
 }
