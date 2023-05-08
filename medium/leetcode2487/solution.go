@@ -1,9 +1,6 @@
 package main
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import . "leetcode/common"
 
 func removeNodes(head *ListNode) *ListNode {
 	cur := head

@@ -1,7 +1,7 @@
 package common
 
-func DeepCopy(in []int) []int {
-	result := make([]int, len(in))
+func DeepCopy[T any](in []T) []T {
+	result := make([]T, len(in))
 	copy(result, in)
 	return result
 }

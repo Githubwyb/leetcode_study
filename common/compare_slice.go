@@ -2,99 +2,56 @@ package common
 
 import "sort"
 
-func CompareSlice(l, r interface{}) bool {
-	switch l.(type) {
-	case []int:
-		a := l.([]int)
-		b := r.([]int)
-		if len(a) != len(b) {
-			return false
-		}
-
-		if len(a) == 0 {
-			return true
-		}
-
-		for i := range a {
-			if a[i] != b[i] {
-				return false
-			}
-		}
-
-	case []string:
-		a := l.([]string)
-		b := r.([]string)
-		if len(a) != len(b) {
-			return false
-		}
-
-		if len(a) == 0 {
-			return true
-		}
-
-		for i := range a {
-			if a[i] != b[i] {
-				return false
-			}
-		}
-
-	case [][]string:
-		a := l.([][]string)
-		b := r.([][]string)
-		if len(a) != len(b) {
-			return false
-		}
-
-		if len(a) == 0 {
-			return true
-		}
-
-		for i := range a {
-			if !CompareSlice(a[i], b[i]) {
-				return false
-			}
-		}
-	case [][]int:
-		a := l.([][]int)
-		b := r.([][]int)
-		if len(a) != len(b) {
-			return false
-		}
-
-		if len(a) == 0 {
-			return true
-		}
-
-		for i := range a {
-			if !CompareSlice(a[i], b[i]) {
-				return false
-			}
-		}
-
-	default:
-		panic("not implement")
+func CompareSlice[T comparable](l, r []T) bool {
+	if len(l) != len(r) {
+		return false
 	}
-
+	if len(l) == 0 {
+		return true
+	}
+	for i := range l {
+		if l[i] != r[i] {
+			return false
+		}
+	}
 	return true
 }
 
-func CompareUnorderSlice(l, r interface{}) bool {
-	switch l.(type) {
-	case []int:
-		a := DeepCopy(l.([]int))
-		b := DeepCopy(r.([]int))
-		sort.Ints(a)
-		sort.Ints(b)
-		return CompareSlice(a, b)
-
-	case []string:
-		a := DeepCopyStrings(l.([]string))
-		b := DeepCopyStrings(r.([]string))
-		sort.Strings(a)
-		sort.Strings(b)
-		return CompareSlice(a, b)
-
-	default:
-		panic("not implement")
+func CompareSlices[T comparable](l, r [][]T) bool {
+	if len(l) != len(r) {
+		return false
 	}
+	if len(l) == 0 {
+		return true
+	}
+	for i := range l {
+		if !CompareSlice(l[i], r[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+type compareType interface {
+	int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64 | string
+}
+
+func CompareUnorderSlice[T compareType](l, r []T) bool {
+	if len(l) != len(r) {
+		return false
+	}
+	if len(l) == 0 {
+		return true
+	}
+
+	a := DeepCopy(l)
+	b := DeepCopy(r)
+	sort.Slice(a, func(i, j int) bool {
+		return a[i] < a[j]
+	})
+	sort.Slice(b, func(i, j int) bool {
+		return b[i] < b[j]
+	})
+
+	return CompareSlice(a, b)
 }

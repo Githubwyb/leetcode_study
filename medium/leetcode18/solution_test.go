@@ -21,7 +21,7 @@ func TestSolution(t *testing.T) {
 
 	for i, v := range testGroup {
 		result := fourSum(common.DeepCopy(v.nums), v.target)
-		if !common.CompareSlice(result, v.Want) {
+		if !common.CompareSlices(result, v.Want) {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result:", result)

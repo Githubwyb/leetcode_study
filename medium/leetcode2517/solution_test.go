@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"testing"
+	. "leetcode/common"
 )
 
 func TestSolution(t *testing.T) {
@@ -19,16 +20,10 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := maximumTastiness(deepCopy(v.price), v.k)
+		result := maximumTastiness(DeepCopy(v.price), v.k)
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result", result)
 	}
-}
-
-func deepCopy(in []int) []int {
-	result := make([]int, len(in))
-	copy(result, in)
-	return result
 }

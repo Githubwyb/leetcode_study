@@ -21,14 +21,14 @@ func TestSolution(t *testing.T) {
 
 	for i, v := range testGroup {
 		result := substringXorQueries(v.s, v.queries)
-		if !common.CompareSlice(result, v.Want) {
+		if !common.CompareSlices(result, v.Want) {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result", result)
 	}
 	for i, v := range testGroup {
 		result := substringXorQueries1(v.s, v.queries)
-		if !common.CompareSlice(result, v.Want) {
+		if !common.CompareSlices(result, v.Want) {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result", result)

@@ -2,14 +2,9 @@ package main
 
 import (
 	"fmt"
+	. "leetcode/common"
 	"testing"
 )
-
-func deepCopy(in []int) []int {
-	result := make([]int, len(in))
-	copy(result, in)
-	return result
-}
 
 func TestSolution(t *testing.T) {
 	type testCase struct {
@@ -26,7 +21,7 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := countPartitions(deepCopy(v.nums), v.k)
+		result := countPartitions(DeepCopy(v.nums), v.k)
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

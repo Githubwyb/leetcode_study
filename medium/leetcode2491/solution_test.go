@@ -3,13 +3,8 @@ package main
 import (
 	"fmt"
 	"testing"
+	. "leetcode/common"
 )
-
-func deepCopy(in []int) []int {
-	result := make([]int, len(in))
-	copy(result, in)
-	return result
-}
 
 func TestSolution(t *testing.T) {
 	type testCase struct {
@@ -24,7 +19,7 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := dividePlayers(deepCopy(v.skill))
+		result := dividePlayers(DeepCopy(v.skill))
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

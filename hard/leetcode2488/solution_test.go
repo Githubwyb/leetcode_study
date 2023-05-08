@@ -3,13 +3,8 @@ package main
 import (
 	"fmt"
 	"testing"
+	. "leetcode/common"
 )
-
-func deepCopy(in []int) []int {
-	result := make([]int, len(in))
-	copy(result, in)
-	return result
-}
 
 func TestSolution(t *testing.T) {
 	type testCase struct {
@@ -26,14 +21,14 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := countSubarrays(deepCopy(v.nums), v.k)
+		result := countSubarrays(DeepCopy(v.nums), v.k)
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result", result)
 	}
 	for i, v := range testGroup {
-		result := countSubarrays1(deepCopy(v.nums), v.k)
+		result := countSubarrays1(DeepCopy(v.nums), v.k)
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

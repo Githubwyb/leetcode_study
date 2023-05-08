@@ -1,30 +1,58 @@
 package common
 
+import "fmt"
+
 type ListNode struct {
 	Val  int
 	Next *ListNode
 }
 
-func MakeList(list []int) *ListNode {
+func (l *ListNode) String() (res string) {
+	for l != nil {
+		res += fmt.Sprint(l.Val)
+		l = l.Next
+		if l != nil {
+			res += " -> "
+		}
+	}
+	return
+}
+
+func MakeList(list []int) (head *ListNode) {
 	if len(list) == 0 {
-		return nil
+		return
 	}
 
-	head := &ListNode{
+	head = &ListNode{
 		Val:  list[0],
 		Next: nil,
 	}
-	curr := head
+	pre := head
 	for i := 1; i < len(list); i++ {
-		curr.Next = &ListNode{
+		pre.Next = &ListNode{
 			Val:  list[i],
 			Next: nil,
 		}
+		pre = pre.Next
 	}
-	return head
+	return
 }
 
-func list2slice(head *ListNode) []int {
+func CompareList(l, r *ListNode) bool {
+	for l != nil || r != nil {
+		if l == nil || r == nil {
+			return false
+		}
+		if l.Val != r.Val {
+			return false
+		}
+		l = l.Next
+		r = r.Next
+	}
+	return true
+}
+
+func List2slice(head *ListNode) []int {
 	if head == nil {
 		return []int{}
 	}

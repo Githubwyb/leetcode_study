@@ -1,10 +1,6 @@
 package main
 
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
+import . "leetcode/common"
 
 func reverseOddLevels(root *TreeNode) *TreeNode {
 	if root == nil {

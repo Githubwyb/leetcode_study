@@ -1,24 +1,8 @@
 package leetcode
 
 import (
-	"fmt"
+	. "leetcode/common"
 )
-
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-func PrintListNode(l *ListNode) (result string) {
-	for l != nil {
-		result += fmt.Sprint(l.Val)
-		l = l.Next
-		if l != nil {
-			result += " -> "
-		}
-	}
-	return
-}
 
 func AddTwoNumbers(l1 *ListNode, l2 *ListNode) (result *ListNode) {
 	flag := 0

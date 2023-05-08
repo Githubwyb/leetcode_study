@@ -19,14 +19,12 @@ func MakeTreeNode(input []interface{}) (root *TreeNode) {
 			case 0:
 				point.Val = value
 				pointChild = 1
-				break
 			case 1:
 				var tmp TreeNode
 				tmp.Val = value
 				point.Left = &tmp
 				pointChild = 2
 				treeList.PushBack(&tmp)
-				break
 			case 2:
 				var tmp TreeNode
 				tmp.Val = value
@@ -35,27 +33,46 @@ func MakeTreeNode(input []interface{}) (root *TreeNode) {
 				pointChild = 1
 				point, _ = treeList.Front().Value.(*TreeNode)
 				treeList.Remove(treeList.Front())
-				break
 			}
 		} else {
 			switch pointChild {
 			case 0:
 				pointChild = 1
-				break
 			case 1:
 				point.Left = nil
 				pointChild = 2
 				treeList.PushBack(nil)
-				break
 			case 2:
 				point.Right = nil
 				treeList.PushBack(nil)
 				pointChild = 1
 				point = treeList.Front().Value.(*TreeNode)
 				treeList.Remove(treeList.Front())
-				break
 			}
 		}
 	}
 	return
+}
+
+func Tree2Array(root *TreeNode) []interface{} {
+	if root == nil {
+		return nil
+	}
+
+	result := []interface{}{}
+	var queue list.List
+	queue.PushBack(root)
+	for queue.Len() > 0 {
+		tmp := queue.Front().Value.(*TreeNode)
+		queue.Remove(queue.Front())
+		result = append(result, tmp.Val)
+		if tmp.Left != nil {
+			queue.PushBack(tmp.Left)
+
+		}
+		if tmp.Right != nil {
+			queue.PushBack(tmp.Right)
+		}
+	}
+	return result
 }

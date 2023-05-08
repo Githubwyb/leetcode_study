@@ -25,14 +25,14 @@ func TestSolution(t *testing.T) {
 
 	for i, v := range testGroup {
 		result := rangeAddQueries(v.n, v.queries)
-		if !common.CompareSlice(result, v.Want) {
+		if !common.CompareSlices(result, v.Want) {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result", result)
 	}
 	for i, v := range testGroup {
 		result := rangeAddQueries1(v.n, v.queries)
-		if !common.CompareSlice(result, v.Want) {
+		if !common.CompareSlices(result, v.Want) {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result", result)

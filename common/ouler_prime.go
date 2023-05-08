@@ -1,13 +1,13 @@
 package common
 
-func oulerPrimes(mx int, primes []int) {
+func oulerPrimes(mx int, primes *[]int) {
 	flag := make([]bool, mx+1) // 标记数有没有被筛掉，false就是没有
 	for i := 2; i < mx+1; i++ {
 		if !flag[i] {
 			// 数没有被比自己小的数筛掉，就代表是质数
-			primes = append(primes, i)
+			*primes = append(*primes, i)
 		}
-		for _, v := range primes {
+		for _, v := range *primes {
 			if i*v > mx {
 				break
 			}

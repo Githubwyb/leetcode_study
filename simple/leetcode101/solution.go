@@ -2,14 +2,8 @@ package main
 
 import (
 	"container/list"
-	_ "fmt"
+	. "leetcode/common"
 )
-
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
 
 func checkSymmetric(a *TreeNode, b *TreeNode) bool {
 	if a == nil && b == nil {

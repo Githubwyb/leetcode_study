@@ -5,12 +5,6 @@ import (
 	"testing"
 )
 
-func deepCopy(in []int) []int {
-	result := make([]int, len(in))
-	copy(result, in)
-	return result
-}
-
 func TestSolution(t *testing.T) {
 	type testCase struct {
 		s    string

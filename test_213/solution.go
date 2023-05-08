@@ -54,7 +54,7 @@ func getMaxScore1(a, b, g int, in []int) int {
 		dp[i] = make([]int, g)
 	}
 	// 从b向前计算，将dp填满，然后返回结果
-	return result
+	return 0
 }
 
 func applesSum1(k int, in []int) int {
