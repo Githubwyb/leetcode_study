@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"leetcode/common"
+	. "leetcode/common"
 	"testing"
 )
 
@@ -18,8 +18,8 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := minOperations(common.DeepCopy(v.nums), common.DeepCopy(v.queries))
-		if !common.CompareSlice(result, v.Want) {
+		result := minOperations(DeepCopy(v.nums), DeepCopy(v.queries))
+		if !CompareSlice(result, v.Want) {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result", result)

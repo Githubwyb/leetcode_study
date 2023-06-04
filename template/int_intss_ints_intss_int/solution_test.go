@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"leetcode/common"
+	. "leetcode/common"
 	"testing"
 )
 
@@ -20,7 +20,7 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := minimumTotalPrice(v.n, common.DeepCopyIntss(v.edges), common.DeepCopy(v.price), common.DeepCopyIntss(v.trips))
+		result := minimumTotalPrice(v.n, DeepCopyIntss(v.edges), DeepCopy(v.price), DeepCopyIntss(v.trips))
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"leetcode/common"
+	. "leetcode/common"
 	"testing"
 )
 
@@ -18,7 +18,7 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := checkValidGrid(common.DeepCopyIntss(v.grid))
+		result := checkValidGrid(DeepCopyIntss(v.grid))
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

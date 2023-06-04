@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"leetcode/common"
+	. "leetcode/common"
 	"testing"
 )
 
@@ -17,7 +17,7 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := findMatrix(common.DeepCopy(v.nums))
+		result := findMatrix(DeepCopy(v.nums))
 		if !checkArray(result, v.nums) {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

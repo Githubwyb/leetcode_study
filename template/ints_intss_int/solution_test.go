@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"leetcode/common"
+	. "leetcode/common"
 	"testing"
 )
 
@@ -18,7 +18,7 @@ func TestSolution(t *testing.T) {
 	}
 
 	for i, v := range testGroup {
-		result := collectTheCoins(common.DeepCopy(v.coins), common.DeepCopyIntss(v.edges))
+		result := collectTheCoins(DeepCopy(v.coins), DeepCopyIntss(v.edges))
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

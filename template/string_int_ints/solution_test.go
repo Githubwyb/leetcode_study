@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"leetcode/common"
+	. "leetcode/common"
 	"testing"
 )
 
@@ -19,7 +19,7 @@ func TestSolution(t *testing.T) {
 
 	for i, v := range testGroup {
 		result := divisibilityArray(v.word, v.m)
-		if !common.CompareSlice(result, v.Want) {
+		if !CompareSlice(result, v.Want) {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
 		fmt.Println(i, "result", result)
