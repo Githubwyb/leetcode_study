@@ -2,25 +2,23 @@ package main
 
 import (
 	"fmt"
+	. "leetcode/common"
 	"testing"
 )
 
 func TestSolution(t *testing.T) {
 	type testCase struct {
-		num1    string
-		num2    string
-		min_sum int
-		max_sum int
-		Want    int
+		nums []int
+		k    int
+		Want int64
 	}
 
 	testGroup := []testCase{
-		{"1", "12", 1, 8, 11},
-		{"1", "5", 1, 5, 5},
+		{[]int{2, 4, 6}, 2, 4},
 	}
 
 	for i, v := range testGroup {
-		result := count(v.num1, v.num2, v.min_sum, v.max_sum)
+		result := minCost(DeepCopy(v.nums), v.k)
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

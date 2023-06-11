@@ -1,13 +1,17 @@
-package main
+package common
 
-func count(num1 string, num2 string, min_sum int, max_sum int) int {
+// 数位dp模板
+func NumDP() {
 	var mod int = 1e9 + 7
+	max_sum := 10
+
+	stateNum := max_sum
 	// 返回小于s的满足条件的数量
 	getCount := func(s string) int {
-		// 状态记忆数组，第一维是位数，第二维是状态（当前表示为前面数字的和），value是数量
+		// 状态记忆数组，第一维是位数，第二维是状态（状态根据具体情况来），value是从这一位向后满足状态的数量
 		memo := make([][]int, len(s))
 		for i := range memo {
-			memo[i] = make([]int, max_sum+1)
+			memo[i] = make([]int, stateNum+1)
 			for j := range memo[i] {
 				memo[i][j] = -1
 			}
@@ -18,19 +22,19 @@ func count(num1 string, num2 string, min_sum int, max_sum int) int {
 		// limitUp代表前面的数位是否都到达上界
 		var dfs func(p, sum int, limitUp bool) (res int)
 		dfs = func(p, sum int, limitUp bool) (res int) {
-			if sum > max_sum {
-				return
-			}
+			// 处理一些限制条件
+			// TODO
 			if p == len(s) {
-				// 到头了，sum必须大于等于最小sum
-				if sum >= min_sum {
+				// 到最后一位了，满足条件返回1，不满足返回0
+				// TODO
+				if true {
 					return 1
 				}
 				return
 			}
 
 			if !limitUp {
-				// 没到上界才能取状态，否则状态是假的
+				// 没到上界才能取状态下的值，否则状态是假的
 				tmp := memo[p][sum]
 				if tmp >= 0 {
 					return tmp
@@ -48,15 +52,5 @@ func count(num1 string, num2 string, min_sum int, max_sum int) int {
 		}
 		return dfs(0, 0, true)
 	}
-
-	ans := getCount(num2) - getCount(num1) + mod
-	// 判断一下num1是否合法，上面直接减去了num1而不是num1-1，少算了num1
-	sumNum1 := 0
-	for _, c := range num1 {
-		sumNum1 += int(c - '0')
-	}
-	if sumNum1 >= min_sum && sumNum1 <= max_sum {
-		ans++
-	}
-	return ans % mod
+	getCount("1234")
 }
