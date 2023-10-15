@@ -2,22 +2,22 @@ package main
 
 import (
 	"fmt"
-	. "leetcode/common"
 	"testing"
 )
 
 func TestSolution(t *testing.T) {
 	type testCase struct {
-		nums []int
-		Want int64
+		s    string
+		Want string
 	}
 
 	testGroup := []testCase{
-		{[]int{7, 52, 2, 4}, 596},
+		{"010", "001"},
+		{"0101", "1001"},
 	}
 
 	for i, v := range testGroup {
-		result := findTheArrayConcVal(DeepCopy(v.nums))
+		result := maximumOddBinaryNumber(v.s)
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

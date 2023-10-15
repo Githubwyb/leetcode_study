@@ -2,22 +2,23 @@ package main
 
 import (
 	"fmt"
-	. "leetcode/common"
 	"testing"
 )
 
 func TestSolution(t *testing.T) {
 	type testCase struct {
-		nums []int
-		Want int64
+		n    int
+		time int
+		Want int
 	}
 
 	testGroup := []testCase{
-		{[]int{7, 52, 2, 4}, 596},
+		{5, 10, 60},
+		{1, 2, 10},
 	}
 
 	for i, v := range testGroup {
-		result := findTheArrayConcVal(DeepCopy(v.nums))
+		result := distanceTraveled(v.n, v.time)
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

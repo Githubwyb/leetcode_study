@@ -9,15 +9,16 @@ import (
 func TestSolution(t *testing.T) {
 	type testCase struct {
 		nums []int
-		Want int64
+		Want int
 	}
 
 	testGroup := []testCase{
-		{[]int{7, 52, 2, 4}, 596},
+		{[]int{1, 3, 2, 4}, 1},
+		{[]int{100, 1, 10}, 9},
 	}
 
 	for i, v := range testGroup {
-		result := findTheArrayConcVal(DeepCopy(v.nums))
+		result := findValueOfPartition(DeepCopy(v.nums))
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}

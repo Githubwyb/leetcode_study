@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/bits"
+)
 
 // 数位dp模板
 func count(s string, n int) int {
@@ -51,7 +54,9 @@ func count(s string, n int) int {
 }
 
 func main() {
-	fmt.Println(count("12", 8))
-	fmt.Println(count("13", 8))
-	fmt.Println(count("19", 8))
+	fmt.Println(bits.OnesCount(1))
+	fmt.Println(bits.OnesCount(2))
+	fmt.Println(bits.OnesCount(3))
+	fmt.Println(bits.OnesCount(4))
+	fmt.Println(bits.OnesCount(5))
 }

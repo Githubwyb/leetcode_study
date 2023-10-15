@@ -13,11 +13,13 @@ func TestSolution(t *testing.T) {
 	}
 
 	testGroup := []testCase{
-		{[]int{7, 52, 2, 4}, 596},
+		{[]int{5, 3, 4, 1, 1}, 13},
+		{[]int{6, 5, 3, 9, 2, 7}, 22},
+		{[]int{3, 2, 5, 5, 2, 3}, 18},
 	}
 
 	for i, v := range testGroup {
-		result := findTheArrayConcVal(DeepCopy(v.nums))
+		result := maximumSumOfHeights(DeepCopy(v.nums))
 		if result != v.Want {
 			t.Fatalf("%d, v %v expect '%v' but '%v'", i, v, v.Want, result)
 		}
