@@ -1,8 +1,11 @@
 package main
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
-func maximumSumQueries(nums1 []int, nums2 []int, queries [][]int) []int {
+func maximumSumQueries1(nums1 []int, nums2 []int, queries [][]int) []int {
 	n := len(nums1)
 	type pair struct{ x, y int }
 	pairs := make([]pair, n)
@@ -57,4 +60,36 @@ func maximumSumQueries(nums1 []int, nums2 []int, queries [][]int) []int {
 		}
 	}
 	return res
+}
+
+func maximumSumQueries(nums1 []int, nums2 []int, queries [][]int) []int {
+	n := len(nums1)
+	type pair struct{ x, y int }
+	pairs := make([]pair, n)
+	for i := range nums1 {
+		pairs[i] = pair{
+			x: nums1[i],
+			y: nums2[i],
+		}
+	}
+	// 按照x排序，得到的数组中，x从大到小
+	sort.Slice(pairs, func(i, j int) bool {
+		return pairs[i].x > pairs[j].x
+	})
+
+	// 遍历pairs，处理y，如果y小于前面最大的y，肯定有一个x比它大，y也比它大的，sum自然更大，此数据就不要了
+	j := 0	// 留下的pairs索引
+	maxY := 0
+	for _, p := range pairs {
+		if p.y < maxY {
+			continue
+		}
+		maxY = p.y
+		pairs[j] = p
+		j++
+	}
+	pairs = pairs[:j]
+
+	
+	return nil
 }
