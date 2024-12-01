@@ -34,9 +34,7 @@ func minInts(nums ...int) int {
 func maxInts(nums ...int) int {
 	ans := nums[0]
 	for _, v := range nums[1:] {
-		if ans < v {
-			ans = v
-		}
+		ans = max(ans, v)
 	}
 	return ans
 }
