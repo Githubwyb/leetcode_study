@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"math/bits"
+	"slices"
 )
 
 // 数位dp模板
@@ -54,9 +54,8 @@ func count(s string, n int) int {
 }
 
 func main() {
-	fmt.Println(bits.OnesCount(1))
-	fmt.Println(bits.OnesCount(2))
-	fmt.Println(bits.OnesCount(3))
-	fmt.Println(bits.OnesCount(4))
-	fmt.Println(bits.OnesCount(5))
+	a := []int{1, 2, 3, 4, 5}
+	for i, v := range slices.Backward(a) {
+		fmt.Println(i, v)
+	}
 }
